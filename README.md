@@ -2,25 +2,46 @@
 
 SC6113 group project. A full-stack DApp where lenders fund a transparent pool, borrowers without bank records build a reusable on-chain credit history, officers approve loans, and auditors can verify every event.
 
-## Team handover / 小组交接入口
+## Live demo and links
 
-[中文交接文档：当前进度、地址、配置、权限和后续任务](docs/TEAM_HANDOVER.md)
-
-* **Live frontend:** https://microlend-web.onrender.com
+* **Live frontend:** https://microlend-web.onrender.com (Sepolia testnet; the free Render tier sleeps, so the first load can take about a minute)
 * **Live API:** https://microlend-api.onrender.com ([health check](https://microlend-api.onrender.com/api/health))
-* **Team repository:** [catjlx/microlend](https://github.com/catjlx/microlend)
-* **Current Render source:** [Garywong007/microlend](https://github.com/Garywong007/microlend), branch `main`, for both services (confirmed by the deployment owner on 2026-10-11). Changes merged into the team repository need to be synced to this fork before Render can deploy them.
+* **Demo video:** https://www.youtube.com/watch?v=yrgKagY_duw
+* **Presentation video:** https://youtu.be/S3S13By7L0E
+* **Source repository:** [catjlx/microlend](https://github.com/catjlx/microlend)
+* **Hosting note:** the Render services build from [Garywong007/microlend](https://github.com/Garywong007/microlend) (`main`, commit `1b5496f`), a mirror of this repository. The application source is identical to this repository's `main`; only documentation files differ.
 
-Public addresses and configuration are documented; private keys and service credentials must be handed over privately and are excluded from Git.
+### Sepolia deployment
+
+Network: Ethereum Sepolia (chain id `11155111`). Deployed 2026-10-11 (block `11890702` onwards). Details are also in [`deployments/sepolia.json`](deployments/sepolia.json) and [`docs/evidence/11-deploy-sepolia.txt`](docs/evidence/11-deploy-sepolia.txt).
+
+| Contract | Address (Etherscan) |
+|---|---|
+| MockStablecoin (mUSDC test token) | [`0x882b02C3eeaC59BC42C283c6C8d32BaA3723B2d1`](https://sepolia.etherscan.io/address/0x882b02C3eeaC59BC42C283c6C8d32BaA3723B2d1#code) |
+| CreditRegistry | [`0xa80e874cA4C8C33b7c1887370005823f4cBe248F`](https://sepolia.etherscan.io/address/0xa80e874cA4C8C33b7c1887370005823f4cBe248F#code) |
+| LendingPool | [`0x576358F66d8d521bcd02A472Ef87F903f1c4f410`](https://sepolia.etherscan.io/address/0x576358F66d8d521bcd02A472Ef87F903f1c4f410#code) |
+| CollateralVault | [`0x9c7b61301E2573f0Ab52aA51669e496E1Cf10B31`](https://sepolia.etherscan.io/address/0x9c7b61301E2573f0Ab52aA51669e496E1Cf10B31#code) |
+| LoanManager | [`0x9279A53E8E93cA960f682c3bAEd6cCC940aE0b69`](https://sepolia.etherscan.io/address/0x9279A53E8E93cA960f682c3bAEd6cCC940aE0b69#code) |
+
+All five contracts were submitted for source verification on Etherscan during deployment (see the log above). Initial roles: the deployer `0xC0f1C1a59D70F3afD12776c86811664B08AeEC80` holds Admin, Credit officer and Auditor; the scoring service address is `0xb5767eFeD7b6C51C4DD9484f9c545B96a60EB3dD` (`SCORER_ROLE` on CreditRegistry). Roles can be granted to other wallets from the Admin tab.
+
+### Deployment records (historical)
+
+Two files are kept as dated records of the 11 October 2026 deployment and are cited as evidence in the Contribution Report. They describe the state on that date and are **not** the current project status.
+
+* [`docs/TEAM_HANDOVER.md`](docs/TEAM_HANDOVER.md) (Chinese): deployment handover written on 11 October 2026. It lists the live addresses, service configuration, wallet roles and the planned test sequence at that time. Task statuses in it are superseded; for example, the full Sepolia loan lifecycle was executed on 13 October 2026.
+* [`docs/evidence/12-cloud-smoke-check.json`](docs/evidence/12-cloud-smoke-check.json): read-only HTTP snapshot of the live frontend and API taken on 11 October 2026 (health, configuration, indexer lag). It contains no transactions and no credentials.
+
+## Overview
 
 * **Smart contracts** (Solidity 0.8.24, OpenZeppelin 5): `CreditRegistry`, `LendingPool`, `CollateralVault`, `LoanManager` (+ test token `MockStablecoin`)
 * **Backend** (Node 20, Express, knex, SQLite/PostgreSQL, ethers v6): wallet-signature login, REST API, chain event indexer, off-chain credit scoring service that signs EIP-712 score attestations
 * **Frontend** (React 18, Vite, ethers v6, Recharts, MetaMask): role-based dashboards for borrower, lender, credit officer, auditor and admin
 * **Data science** (Python): logistic-regression default model, fairness checks, and a portfolio simulation
 
-> **Status.** Compiled and tested on Ubuntu 22.04 (WSL2) with Node 20: 49/49 contract tests and 16/16 backend tests pass (see `docs/TESTING.md` for coverage and gas). Unaudited coursework code.
+> **Status.** Compiled and tested on Ubuntu 22.04 (WSL2) with Node 20: 49/49 contract tests and 16/16 backend tests pass (see `docs/TESTING.md` for coverage and gas). Unaudited coursework code. The full loan lifecycle (score, application, approval, collateral, disbursement, repayment) was executed on Sepolia on 13 October 2026 (Loan #2) and is shown in the demo video.
 
-Docs: [Architecture](docs/ARCHITECTURE.md) · [Security](docs/SECURITY.md) · [Testing](docs/TESTING.md) · [Requirement traceability](docs/REQUIREMENTS_TRACEABILITY.md) · [User manual](docs/USER_MANUAL.md) · [Report and slides guide](docs/REPORT_GUIDE.md)
+Docs: [Architecture](docs/ARCHITECTURE.md) · [Security](docs/SECURITY.md) · [Testing](docs/TESTING.md) · [Requirement traceability](docs/REQUIREMENTS_TRACEABILITY.md) · [User manual](docs/USER_MANUAL.md) · [Report and slides guide](docs/REPORT_GUIDE.md) · [Submitted reports](docs/reports/) (Technical Report v1.4, User Manual v1.2, Contribution Report v1.1)
 
 ## 1. Prerequisites
 
@@ -102,12 +123,7 @@ render.yaml     cloud blueprint            shared/abis ABIs shared by backend an
 | `GET /api/officer/queue` | officer/admin | applications waiting for review with model inputs |
 | `GET /api/audit/summary` | auditor/admin | approval/default rates, speed, volumes |
 
-## 6. Team workflow
-
-* One branch per task, pull requests with at least one reviewer. Each member commits under their own GitHub identity; `git shortlog -sn` and the PR list feed the individual contribution report.
-* Suggested ownership (6 people): (1) contracts + security, (2) tests + gas + Slither, (3) backend + DB + deployment, (4) frontend + UX test, (5) data science + simulation, (6) problem analysis, evidence, report editing and video. Everyone presents what they built.
-
-## 7. Limitations
+## 6. Limitations
 
 Prototype for coursework: synthetic training data, mock stablecoin, testnet only, self-reported scoring inputs, no KYC/AML, admin keys not behind a multisig. See [docs/SECURITY.md](docs/SECURITY.md) section 3.
 

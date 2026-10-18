@@ -48,8 +48,8 @@
 
 ## 4. Checklist before you claim "security tested"
 
-- [ ] `npm test` passes (49 contract tests)
-- [ ] `npm run coverage` - record statement/branch coverage
-- [ ] `npm run slither` - triage each finding as fixed / accepted (with reason) / false positive
-- [ ] Manually try: repay as another wallet, approve as non-officer, replay a score signature, disburse after expiry, withdraw more than liquid, markDefault before grace
-- [ ] Confirm roles on the deployed Sepolia contracts (admin, officer, auditor, scorer) are what you intend
+- [x] `npm test` passes (49 contract tests)
+- [x] `npm run coverage` - record statement/branch coverage (97.1% statements, 75.9% branches; `docs/evidence/03-coverage.txt`)
+- [x] `npm run slither` - triage each finding as fixed / accepted (with reason) / false positive (10 findings before, 7 after remediation, each triaged; `docs/SLITHER_TRIAGE.md`)
+- [x] Try the abuse cases: repay as another wallet, approve as non-officer, replay a score signature, disburse after expiry, withdraw more than liquid, markDefault before grace (each is an automated test: `test/LoanManager.test.js`, `test/CreditRegistry.test.js`, `test/LendingPool.test.js`)
+- [x] Confirm roles on the deployed Sepolia contracts (admin, officer, auditor, scorer) are what you intend (`deployments/sepolia.json`; the admin, officer and auditor roles appear on the connected wallets in the 13 October demonstration video)

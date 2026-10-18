@@ -108,11 +108,3 @@ python3 ml/train_model.py && python3 ml/simulate_portfolio.py
 | Backend on PostgreSQL 16 (Docker) against the local chain | Tables created, 90 events indexed (lastBlock 88 = head), `/api/health`, `/api/stats`, `/api/pool/history` return the same figures as the SQLite run |
 | Wallet login on PostgreSQL | Nonce issued and stored in `auth_nonces`; forged signature rejected with `Invalid signature` (no server error) |
 | Backend Docker image (`docker build -f backend/Dockerfile .`) | Builds successfully (node:22-slim, native module compiled, `ml/model.json` and `deployments/` included) |
-
-## 6. Pre-deployment checks (local, before Sepolia)
-
-| Check | Result |
-|---|---|
-| Backend on PostgreSQL 16 (Docker) against the local chain | Tables created, 90 events indexed (lastBlock 88 = head), `/api/health`, `/api/stats`, `/api/pool/history` return the same figures as the SQLite run |
-| Wallet login on PostgreSQL | Nonce issued and stored in `auth_nonces`; forged signature rejected with `Invalid signature` (no server error) |
-| Backend Docker image (`docker build -f backend/Dockerfile .`) | Builds successfully (node:22-slim, native module compiled, `ml/model.json` and `deployments/` included) |
